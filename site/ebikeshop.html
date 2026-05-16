@@ -9479,7 +9479,7 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 <link data-instant-track="" rel="stylesheet" type="text/css" href="./ebikeshop_files/owl.carousel.min.css" class="gf_libs">
 <!--GEM_HEADER_END-->
 <!--Gem_Page_Main_Editor--><div class="clearfix"></div><div class="gryffeditor"><div data-label="Custom" data-key="custom" data-atomgroup="module" id="m-3card-hero" class="module-wrap" data-name="3-Card Hero"><div class="module"><style>
-.three-card-hero{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:14px;width:100%;max-width:1320px;margin:24px auto 0;padding:0 24px;box-sizing:border-box;font-family:inherit;}
+.three-card-hero{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:14px;width:100%;max-width:1188px;margin:24px auto 0;padding:0 24px;box-sizing:border-box;font-family:inherit;}
 .three-card-hero .tch-card{position:relative;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:28px;color:#fff;text-decoration:none;min-height:240px;}
 .three-card-hero .tch-big{grid-row:1 / span 2;min-height:520px;background:linear-gradient(135deg,#4733FF 0%,#2a1bb8 100%);}
 .three-card-hero .tch-big::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.52) 0%,rgba(0,0,0,.28) 45%,transparent 70%);z-index:1;}
@@ -9548,14 +9548,16 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 <script src="./ebikeshop_files/heroBanner.bundle.js"></script>
 
 <style id="section-centering-fix">
-/* ── Align all sections with the hero-bikes left edge (max-width:1320px, padding:0 24px) ── */
+/* ── Backmarket-style: every in-scope section shares one centered container (max-width:1320px, symmetric padding:24px) ── */
 #r-1678092039992,
 #r-1678092039893,
 #r-1678092040010,
 #r-1710404629700,
 #r-1712657356329,
 #r-1708589796656,
+#r-1742817576274,
 #m-1678092039935,
+#m-1678092039969,
 #m-1687963917119,
 #m-1678092039999 {
   margin-left: auto !important;
@@ -9569,16 +9571,14 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
   #r-1710404629700,
   #r-1712657356329,
   #r-1708589796656,
-  #m-1678092039935 {
-    max-width: 1320px !important;
-    padding-left: 8px !important;
-    padding-right: 0 !important;
-  }
+  #r-1742817576274,
+  #m-1678092039935,
+  #m-1678092039969,
   #m-1687963917119,
   #m-1678092039999 {
-    max-width: 1320px !important;
-    padding-left: 23px !important;
-    padding-right: 15px !important;
+    max-width: 1188px !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
   }
 }
 @media (max-width: 991px) {
@@ -9588,7 +9588,9 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
   #r-1710404629700,
   #r-1712657356329,
   #r-1708589796656,
+  #r-1742817576274,
   #m-1678092039935,
+  #m-1678092039969,
   #m-1687963917119,
   #m-1678092039999 {
     max-width: 100% !important;
