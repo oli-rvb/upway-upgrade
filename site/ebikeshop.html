@@ -9480,8 +9480,8 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 <!--GEM_HEADER_END-->
 <!--Gem_Page_Main_Editor--><div class="clearfix"></div><div class="gryffeditor"><div data-label="Custom" data-key="custom" data-atomgroup="module" id="m-3card-hero" class="module-wrap" data-name="3-Card Hero"><div class="module"><style>
 .three-card-hero{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:14px;width:100%;max-width:1188px;margin:24px auto 0;padding:0 24px;box-sizing:border-box;font-family:inherit;}
-.three-card-hero .tch-card{position:relative;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:28px;color:#fff;text-decoration:none;min-height:240px;}
-.three-card-hero .tch-big{grid-row:1 / span 2;min-height:520px;background:linear-gradient(135deg,#4733FF 0%,#2a1bb8 100%);}
+.three-card-hero .tch-card{position:relative;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:24px;color:#fff;text-decoration:none;aspect-ratio:1/1;height:auto;min-height:0;}
+.three-card-hero .tch-big{grid-row:1 / span 2;aspect-ratio:auto;height:auto;min-height:0;background:linear-gradient(135deg,#4733FF 0%,#2a1bb8 100%);}
 .three-card-hero .tch-big::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.52) 0%,rgba(0,0,0,.28) 45%,transparent 70%);z-index:1;}
 .three-card-hero .tch-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
 .three-card-hero .tch-bike{position:absolute;right:-30px;bottom:-30px;width:75%;max-width:560px;z-index:1;pointer-events:none;filter:drop-shadow(0 30px 40px rgba(0,0,0,.25));}
@@ -9489,7 +9489,7 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 .three-card-hero .tch-content{position:relative;z-index:2;max-width:60%;}
 .three-card-hero .tch-content h2{font-family:'Gradient Premium','Gradient_Premium',inherit;font-weight:700;color:#fff;margin:0 0 10px;line-height:1;letter-spacing:-.01em;}
 .three-card-hero .tch-big h2{font-size:clamp(40px,5vw,76px);}
-.three-card-hero .tch-small h2{font-size:clamp(24px,2.4vw,34px);max-width:80%;}
+.three-card-hero .tch-small h2{font-size:18px;font-weight:700;line-height:1.2;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .three-card-hero .tch-content p{margin:0 0 24px;font-size:16px;line-height:1.4;opacity:.95;max-width:380px;}
 .three-card-hero .tch-list{list-style:none;padding:0;margin:14px 0 18px;display:flex;flex-direction:column;gap:8px;}
 .three-card-hero .tch-list li{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;line-height:1.2;color:#fff;}
@@ -9500,14 +9500,16 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 .three-card-hero .tch-sell-split{flex-direction:row;background:transparent;padding:0;}
 .three-card-hero .tch-split-left{flex:1;padding:28px;display:flex;flex-direction:column;justify-content:space-between;z-index:2;background:linear-gradient(to right,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 100%);}
 .three-card-hero .tch-split-left h2{font-family:'Gradient Premium','Gradient_Premium',inherit;font-size:clamp(20px,2vw,24px);font-weight:800;color:#fff;margin:0 0 12px;line-height:1.1;letter-spacing:-.01em;}
-.three-card-hero .tch-split-list{list-style:none;padding:0;margin:0 0 16px;display:flex;flex-direction:column;gap:8px;}
-.three-card-hero .tch-split-list li{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:#fff;}
+.three-card-hero .tch-split-list{list-style:none!important;padding:0!important;margin:8px 0 10px;display:flex;flex-direction:column;gap:4px;}
+.three-card-hero .tch-split-list li{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:#fff;line-height:1.2;}
+.three-card-hero .tch-split-list li::before,.three-card-hero .tch-split-list li::marker{display:none!important;content:none!important;}
 .three-card-hero .tch-split-list svg{flex-shrink:0;}
 .three-card-hero .tch-split-right{width:45%;position:relative;overflow:hidden;}
 .three-card-hero .tch-split-right img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;}
 .three-card-hero .tch-sell-full{background:#111;}
 .three-card-hero .tch-sell-full::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.72) 0%,rgba(0,0,0,.45) 55%,transparent 90%);z-index:1;}
 .three-card-hero .tch-sell-full .tch-content,.three-card-hero .tch-sell-full .tch-cta{z-index:2;}
+.three-card-hero .tch-sell-full .tch-content{max-width:100%;}
 @media (max-width:900px){.three-card-hero .tch-split-right{width:40%;min-height:180px;}.three-card-hero .tch-split-left{padding:20px;}}
 .three-card-hero .tch-cta{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:14px 26px;background:#4F46E5;color:#fff;border-radius:8px;font-weight:600;font-size:15px;text-decoration:none;width:fit-content;transition:transform .15s ease,box-shadow .15s ease;}
 .three-card-hero .tch-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.18);}
@@ -9709,9 +9711,9 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 .three-card-hero .tch-nav-widget{background:#fff!important;cursor:default!important;justify-content:flex-start!important;}
 .three-card-hero .tch-nav-widget::after{display:none!important;}
 /* ── Inner layout (matches React section p-6 space-y-4) ── */
-.tnw-inner{display:flex;flex-direction:column;gap:16px;width:100%;}
+.tnw-inner{display:flex;flex-direction:column;gap:8px;width:100%;height:100%;justify-content:space-between;}
 /* ── Title (React: text-2xl font-bold leading-none) ── */
-.tnw-title{font-size:24px;font-weight:700!important;color:#1c1535;margin:0;line-height:1.2;letter-spacing:-.01em;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif!important;}
+.tnw-title{font-size:18px!important;font-weight:700!important;color:#1c1535;margin:0;line-height:1.2;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif!important;}
 /* ── List (React: flex flex-col gap-2) ── */
 .tnw-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
 /* ── Item (React: rounded-lg bg-[#F5F5FA]) ── */
@@ -9719,17 +9721,17 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 .tnw-item::before{display:none!important;}
 .tnw-item:hover{background:#ECEDF5;}
 /* ── Item link (React: grid grid-cols-[1fr_auto] gap-2 p-4) ── */
-.tnw-item-link{display:grid;grid-template-columns:1fr auto;gap:8px;padding:16px;text-decoration:none;color:inherit;align-items:center;width:100%;box-sizing:border-box;}
+.tnw-item-link{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px 12px;text-decoration:none;color:inherit;align-items:center;width:100%;box-sizing:border-box;}
 /* ── Item text ── */
 .tnw-item-text{display:flex;flex-direction:column;gap:4px;min-width:0;line-height:1;}
-.tnw-item-name{font-size:16px;font-weight:700;color:#1c1535;line-height:1.3;}
-.tnw-item-sub{font-size:14px;color:#6b7280;line-height:1.3;}
+.tnw-item-name{font-size:13px;font-weight:700;color:#1c1535;line-height:1.25;}
+.tnw-item-sub{font-size:12px;color:#6b7280;line-height:1.25;}
 .tnw-item-sub em{font-style:normal;color:#9ca3af;}
 /* ── Separator (React: relative my-2 with hr) ── */
-.tnw-sep{display:flex;align-items:center;gap:8px;color:#9ca3af;font-size:14px;font-weight:400;}
+.tnw-sep{display:flex;align-items:center;gap:8px;color:#9ca3af;font-size:12px;font-weight:400;margin:0;}
 .tnw-sep::before,.tnw-sep::after{content:'';flex:1;height:1px;background:#e5e7eb;}
 /* ── CTA button (React: fullWidth default button) ── */
-.tnw-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:16px;width:100%;box-sizing:border-box;transition:background .15s;}
+.tnw-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:14px;width:100%;box-sizing:border-box;transition:background .15s;}
 .tnw-btn:hover{background:#4338CA;}
 /* ── Cloned React section: strip width / padding / bg ── */
 #tch-nav-widget section[aria-labelledby="continue-browsing-heading"]{width:100%!important;max-width:100%!important;padding:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;}
