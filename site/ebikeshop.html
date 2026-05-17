@@ -9404,26 +9404,26 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
   */
 
   #upway-header-container {
-    min-height: 140px;
+    min-height: 20px;
   }
 
   #upway-header-container.upway-header-container--with-announcement {
-    min-height: 156px;
+    min-height: 100px;
   }
 
   @media (min-width: 768px) {
     #upway-header-container.upway-header-container--with-announcement {
-      min-height: 180px;
+      min-height: 80px;
     }
   }
 
   @media (min-width: 1024px) {
     #upway-header-container {
-      min-height: 169px;
+      min-height: 60px;
     }
 
     #upway-header-container.upway-header-container--with-announcement {
-      min-height: 169px;
+      min-height: 80px;
     }
   }
 </style>
@@ -9599,6 +9599,15 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 #upway-recently-viewed-container,
 #upway-recommended-bikes-container {
   overflow: hidden !important;
+}
+/* "Nouveau sur Upway": kill the .px-40 head padding so its title aligns with other section headings (e.g. "Choisissez votre marque") */
+#m-1678092039969 .carousel__head {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+/* Header: kill the fixed height that leaves empty space below the nav (top-bar is hidden, so the box's 169px is taller than its content). Let height fit content instead. */
+#shadow-body .tailwind-root > header {
+  height: auto !important;
 }
 </style>
 <style id="tnw-styles">
