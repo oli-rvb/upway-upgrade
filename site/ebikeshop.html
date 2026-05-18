@@ -9843,6 +9843,75 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 })();
 </script>
 
+<style>
+/* ── Media carousel: arrows beside the h2, native owl nav/dots hidden ── */
+#m-1712657356204 .owl-nav,
+#m-1712657356204 .owl-dots { display: none !important; }
+#m-1712657356204 .owl-stage-outer { overflow: hidden; }
+#e-1712657356262 .elm h2 { margin: 0; }
+#c-1676968430343 > #e-1712657356262 { margin-bottom: 8px; }
+#c-1676968430343 > #e-1712657356255 { margin-bottom: 24px; position: relative; }
+.media-arrows {
+  display: flex; gap: 16px; flex-shrink: 0;
+  position: absolute; right: 0; bottom: 0;
+}
+.media-arrows button {
+  width: 32px; height: 32px; border-radius: 100%;
+  background: #4733FF; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0; transition: background .15s;
+}
+.media-arrows button:hover { background: #3525cc; }
+.media-arrows svg { width: 32px; height: 32px; fill: #fff; }
+</style>
+<script>
+/* Inject arrows next to "Les médias parlent de nous" h2 and drive the owl-stage transform */
+(function() {
+  function build() {
+    var subWrap = document.getElementById('e-1712657356255');
+    var module = document.getElementById('m-1712657356204');
+    if (!subWrap || !module || subWrap.dataset.arrowsBuilt === '1') return true;
+    subWrap.dataset.arrowsBuilt = '1';
+
+    /* Remove arrows from previous location (heading) if a prior run injected them there */
+    var stale = document.querySelector('#e-1712657356262 .media-arrows');
+    if (stale) stale.parentNode.removeChild(stale);
+
+    var arrows = document.createElement('div');
+    arrows.className = 'media-arrows';
+    arrows.innerHTML =
+      '<button type="button" id="media-prev" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>' +
+      '<button type="button" id="media-next" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>';
+    subWrap.appendChild(arrows);
+
+    function go(dir) {
+      var carousel = module.querySelector('.owl-carousel');
+      var stage = carousel && carousel.querySelector('.owl-stage');
+      var item = carousel && (carousel.querySelector('.owl-item:not(.cloned)') || carousel.querySelector('.owl-item'));
+      if (!stage || !item) return;
+      var step = item.getBoundingClientRect().width;
+      var items = carousel.querySelectorAll('.owl-item:not(.cloned)');
+      var view = carousel.getBoundingClientRect().width;
+      var min = Math.min(0, -(items.length * step - view));
+      var m = (stage.style.transform || '').match(/translate3d\(\s*(-?\d+(?:\.\d+)?)/);
+      var x = m ? parseFloat(m[1]) : 0;
+      var target = x + (dir > 0 ? -step : step);
+      if (target > 0) target = min;
+      else if (target < min) target = 0;
+      stage.style.transition = 'transform .35s ease';
+      stage.style.transform = 'translate3d(' + target + 'px, 0px, 0px)';
+    }
+    document.getElementById('media-prev').addEventListener('click', function(e) { e.preventDefault(); go(-1); });
+    document.getElementById('media-next').addEventListener('click', function(e) { e.preventDefault(); go(1); });
+    return true;
+  }
+  if (document.readyState === 'complete') build();
+  else window.addEventListener('load', build);
+  var tries = 0;
+  var iv = setInterval(function() { if (build() || ++tries > 20) clearInterval(iv); }, 500);
+})();
+</script>
+
   <div class="tch-card tch-small tch-nav-widget" id="tch-nav-widget">
     <div class="tnw-inner" id="tnw-inner">
       <h2 class="tnw-title">Continuer la navigation</h2>
