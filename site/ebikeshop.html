@@ -9267,6 +9267,15 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
     display: none !important;
 }
 
+/* Now that the top dark bar AND the bottom announcement are hidden, the fixed header heights (h-156/140/169) reserve empty space. Let the header collapse to its actual content. */
+.tailwind-root header.h-\[156px\],
+.tailwind-root header.md\:h-\[140px\],
+.tailwind-root header.lg\:h-\[169px\],
+.tailwind-root > header {
+    height: auto !important;
+    min-height: 0 !important;
+}
+
 @media (min-width: 1024px) {
 
 .tailwind-root .lg\:text-base {
@@ -9572,14 +9581,18 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
   #r-1710404629700,
   #r-1712657356329,
   #r-1708589796656,
-  #r-1742817576274,
   #m-1678092039935,
-  #m-1678092039969,
   #m-1687963917119,
   #m-1678092039999 {
     max-width: 1188px !important;
     padding-left: 24px !important;
     padding-right: 24px !important;
+  }
+  /* #m-1678092039969 is nested inside #r-1678092039893 — inherit its padding, don't add a second layer */
+  #m-1678092039969 {
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
 @media (max-width: 991px) {
@@ -9589,12 +9602,18 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
   #r-1710404629700,
   #r-1712657356329,
   #r-1708589796656,
-  #r-1742817576274,
   #m-1678092039935,
-  #m-1678092039969,
   #m-1687963917119,
   #m-1678092039999 {
     max-width: 100% !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  /* #m-1678092039969 is nested inside #r-1678092039893 — inherit its padding, don't add a second layer */
+  #m-1678092039969 {
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
 #upway-recently-viewed-container,
@@ -9703,9 +9722,21 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
   fill: #fff !important;
 }
 /* "Nos clients parlent de nous": title now wrapped in the same nested gf_row-fluid + gf_column + element-wrap pattern as "Choisissez votre marque", so no extra CSS is needed — it inherits the same alignment naturally */
-/* Header: kill the fixed height that leaves empty space below the nav (top-bar is hidden, so the box's 169px is taller than its content). Let height fit content instead. */
-#shadow-body .tailwind-root > header {
+/* Header: kill the fixed height that leaves empty space below the nav (top-bar and announcement banner are hidden, so the outer container's 140-169px is taller than its visible content). Let height fit content instead — applies to every viewport. */
+#shopify-section-headerV2 {
+  min-height: 0 !important;
+}
+#shadow-body .tailwind-root > header,
+#shadow-body .tailwind-root > header.h-\[156px\],
+#shadow-body .tailwind-root > header.md\:h-\[140px\],
+#shadow-body .tailwind-root > header.lg\:h-\[169px\] {
   height: auto !important;
+  min-height: 0 !important;
+}
+#upway-header-container,
+#upway-header-container.upway-header-container--with-announcement {
+  height: auto !important;
+  min-height: 0 !important;
 }
 </style>
 <style id="tnw-styles">
@@ -9717,7 +9748,11 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 #r-1678092040052,
 #r-1678092040052.gf_row-fluid,
 #r-1708589796657,
-#r-1708589796657.gf_row-fluid {
+#r-1708589796657.gf_row-fluid,
+#r-1730911943724,
+#r-1730911943724.gf_row-fluid,
+#r-1730911943720,
+#r-1730911943720.gf_row-fluid {
   max-width: 100% !important;
   width: 100% !important;
   margin-left: 0 !important;
@@ -9727,6 +9762,65 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
   padding-left: 0 !important;
   padding-right: 0 !important;
   box-sizing: border-box !important;
+}
+
+/* ── Rounded-box rows (#r-1678092039907 "Petits prix / Qualité / Livré", #r-1730911943747 "Nos vélos les plus recherchés"):
+   reset fluid blow-out then style as a centered rounded box.
+   Outer edges follow the content edges of sibling sections:
+   - sibling section max-width:1188px + padding:24px → content edge is viewport-48 (below 1188vw) or 1140 (above).
+   - sibling section max-width:100% + padding:16px (below 992vw) → content edge is viewport-32. */
+#r-1678092039907,
+#r-1678092039907.gf_row-fluid,
+#r-1730911943747,
+#r-1730911943747.gf_row-fluid {
+  left: 0 !important;
+  transform: none !important;
+  width: calc(100% - 48px) !important;
+  max-width: 1140px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 32px 24px !important;
+  background-color: #F4F2EC;
+  border-radius: 16px;
+  box-sizing: border-box !important;
+}
+@media (max-width: 991px) {
+  #r-1678092039907,
+  #r-1678092039907.gf_row-fluid,
+  #r-1730911943747,
+  #r-1730911943747.gf_row-fluid {
+    width: calc(100% - 32px) !important;
+    max-width: none !important;
+    padding: 24px 16px !important;
+  }
+}
+/* Tighten link-list spacing inside the "Nos vélos les plus recherchés" box */
+#r-1730911943747 .elm > p {
+  margin: 0 0 6px !important;
+  line-height: 1.4 !important;
+}
+#r-1730911943747 .elm > p:last-child {
+  margin-bottom: 0 !important;
+}
+#r-1730911943747 #e-1730911943790 .elm,
+#r-1730911943747 #e-1730911943775 .elm {
+  margin-bottom: 12px;
+}
+/* Below the lg/md breakpoint Gem collapses the 4+4+4 layout to 12+12+12 (one column).
+   In the 600–991px range there's still room for 2 columns — force a 2-up wrap. */
+@media (min-width: 600px) and (max-width: 991px) {
+  #r-1730911943720,
+  #r-1678092040052 {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 24px !important;
+  }
+  #r-1730911943720 > .gf_column,
+  #r-1678092040052 > .gf_column {
+    flex: 0 0 calc(50% - 12px) !important;
+    max-width: calc(50% - 12px) !important;
+    width: calc(50% - 12px) !important;
+  }
 }
 
 /* Categories carousel gradient fades */
