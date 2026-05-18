@@ -9633,8 +9633,8 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
   visibility: visible !important;
   display: flex !important;
   width: auto !important;
-  transform: none !important;
   flex-wrap: nowrap;
+  transition: transform .35s ease;
 }
 #m-1678092039969 .slick-slide {
   display: block !important;
@@ -9649,6 +9649,58 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 #m-1678092039969 .product-collection:hover .rimage-bg-hover,
 #m-1678092039969 .product-collection__image:hover .rimage-bg-hover {
   opacity: 1 !important;
+}
+/* Carousel header: push arrows to the right and align their bottom with the subtitle baseline. */
+#m-1678092039969 .carousel__head {
+  display: flex !important;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+#m-1678092039969 .carousel__head > .col-auto.mr-auto {
+  margin-right: auto !important;
+}
+#m-1678092039969 .carousel__head > div:last-child {
+  display: flex !important;
+  gap: 16px;
+  align-items: center;
+  flex-shrink: 0;
+}
+#m-1678092039969 .carousel__head .slick-arrow {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  position: static !important;
+  width: 32px !important;
+  height: 32px !important;
+  top: auto !important;
+  margin: 0 !important;
+  max-height: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  cursor: pointer;
+  border-radius: 100%;
+  background: #4733FF;
+  transition: background .15s;
+  padding: 0;
+}
+#m-1678092039969 .carousel__head .slick-arrow:hover {
+  background: #3525cc;
+}
+#m-1678092039969 .carousel__head .slick-arrow [data-js-carousel-arrow],
+#m-1678092039969 .carousel__head .slick-arrow i {
+  position: static !important;
+  top: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-style: normal;
+}
+#m-1678092039969 .carousel__head .slick-arrow svg {
+  width: 32px !important;
+  height: 32px !important;
+  fill: #fff !important;
 }
 /* "Nos clients parlent de nous": title now wrapped in the same nested gf_row-fluid + gf_column + element-wrap pattern as "Choisissez votre marque", so no extra CSS is needed — it inherits the same alignment naturally */
 /* Header: kill the fixed height that leaves empty space below the nav (top-bar is hidden, so the box's 169px is taller than its content). Let height fit content instead. */
@@ -10245,7 +10297,7 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
                                         <div class="cursor-pointer mx-8 d-inline-block slick-arrow slick-disabled" data-js-carousel-prev="" aria-disabled="true" style="max-height: 269.25px;">
                                             <div data-js-carousel-arrow="" style="top: 134.625px;">
                                                 <i>
-                                                    <svg class="carousel__left-arrow" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <svg width="32" height="32" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                         <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
                                                     </svg>
                                                 </i>
@@ -10254,7 +10306,7 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
                                         <div class="cursor-pointer ml-8 d-inline-block slick-arrow" data-js-carousel-next="" style="max-height: 269.25px;" aria-disabled="false">
                                             <div data-js-carousel-arrow="" style="top: 134.625px;">
                                                 <i>
-                                                    <svg class="carousel__right-arrow" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <svg width="32" height="32" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                         <path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
                                                     </svg>
                                                 </i>
@@ -10453,8 +10505,40 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
 </carousel-products>
 <script>
     theme.AssetsLoader.require('scripts', 'carousel_products');
-</script></div></div></content>
-</invoke></div></div><!--gfsplit--><div data-label="Row" data-key="row" data-atomgroup="row" id="r-1708589796656" class="gf_row" data-icon="gpicon-row" data-id="1708589796656" data-extraclass=""><div class="gf_column gf_col-lg-12 gf_col-md-12 gf_col-sm-12 gf_col-xs-12" id="c-1708589796705" data-id="1708589796705"><div data-label="Row" data-key="row" data-atomgroup="row" id="r-1708589796657" class="gf_row gf_row-fluid gf_row-no-padding gf_row-gap-0" data-icon="gpicon-row" data-id="1708589796657" data-extraclass="" data-row-gap="0px"><div class="gf_column gf_col-lg-12 gf_col-md-12 gf_col-sm-12 gf_col-xs-12" id="c-1708589796658" data-id="1708589796658"><div data-label="Heading" data-key="heading" data-atomgroup="element" id="e-1708589796659" class="element-wrap" data-icon="gpicon-heading" data-ver="2" data-id="1708589796659"><div class="elm text-edit gf-elm-center gf-elm-left-md gf-elm-left-sm gf-elm-left-xs gf-elm-left-lg" data-gemlang="en" data-exc=""><h2 class="gf_gs-text-heading-2">Nos clients parlent de nous</h2></div></div></div></div><div data-label="Liquid" data-key="liquid" data-atomgroup="module" id="m-1697793795064" class="module-wrap" data-icon="gpicon-liquid" data-ver="1.1" data-id="1697793795064" data-name="Trustpilot Reviews Carousel Widget" style=""><div class="module gf_module- gf_module--lg gf_module--md gf_module--sm gf_module--xs "><!-- TrustBox widget - Carousel --><div class="trustpilot-widget" data-locale="fr-FR" data-template-id="53aa8912dec7e10d38f59f36" data-businessunit-id="619cb6f68535aa4407e65db6" data-style-height="140px" data-style-width="100%" data-theme="light" data-stars="5" data-review-languages="fr" style="position: relative;"><iframe title="Avis clients publiés sur Trustpilot" loading="auto" src="./ebikeshop_files/index.html" style="position: relative; height: 140px; width: 100%; border-style: none; display: block; overflow: hidden;"></iframe></div><!-- End TrustBox widget --></div></div></div></div>
+</script>
+<script>
+(function () {
+  function init() {
+    var module = document.getElementById('m-1678092039969');
+    if (!module || module.dataset.arrowsWired === '1') return true;
+    var track = module.querySelector('.slick-track');
+    var list = module.querySelector('.slick-list');
+    var slides = module.querySelectorAll('.slick-slide');
+    var prev = module.querySelector('[data-js-carousel-prev]');
+    var next = module.querySelector('[data-js-carousel-next]');
+    if (!track || !list || !slides.length || !prev || !next) return false;
+    module.dataset.arrowsWired = '1';
+    prev.classList.remove('slick-disabled');
+    prev.setAttribute('aria-disabled', 'false');
+    var step = 280 + 16;
+    var offset = 0;
+    function update() {
+      var viewW = list.getBoundingClientRect().width;
+      var maxOffset = Math.max(0, slides.length * step - 16 - viewW);
+      if (offset < 0) offset = maxOffset;
+      else if (offset > maxOffset) offset = 0;
+      track.style.transform = 'translate3d(' + (-offset) + 'px, 0, 0)';
+    }
+    prev.addEventListener('click', function (e) { e.preventDefault(); offset -= step; update(); });
+    next.addEventListener('click', function (e) { e.preventDefault(); offset += step; update(); });
+    update();
+    return true;
+  }
+  if (document.readyState === 'complete') init();
+  else window.addEventListener('load', init);
+  var tries = 0, iv = setInterval(function () { if (init() || ++tries > 20) clearInterval(iv); }, 500);
+})();
+</script></div></div></div></div><!--gfsplit--><div data-label="Row" data-key="row" data-atomgroup="row" id="r-1708589796656" class="gf_row" data-icon="gpicon-row" data-id="1708589796656" data-extraclass=""><div class="gf_column gf_col-lg-12 gf_col-md-12 gf_col-sm-12 gf_col-xs-12" id="c-1708589796705" data-id="1708589796705"><div data-label="Row" data-key="row" data-atomgroup="row" id="r-1708589796657" class="gf_row gf_row-fluid gf_row-no-padding gf_row-gap-0" data-icon="gpicon-row" data-id="1708589796657" data-extraclass="" data-row-gap="0px"><div class="gf_column gf_col-lg-12 gf_col-md-12 gf_col-sm-12 gf_col-xs-12" id="c-1708589796658" data-id="1708589796658"><div data-label="Heading" data-key="heading" data-atomgroup="element" id="e-1708589796659" class="element-wrap" data-icon="gpicon-heading" data-ver="2" data-id="1708589796659"><div class="elm text-edit gf-elm-center gf-elm-left-md gf-elm-left-sm gf-elm-left-xs gf-elm-left-lg" data-gemlang="en" data-exc=""><h2 class="gf_gs-text-heading-2">Nos clients parlent de nous</h2></div></div></div></div><div data-label="Liquid" data-key="liquid" data-atomgroup="module" id="m-1697793795064" class="module-wrap" data-icon="gpicon-liquid" data-ver="1.1" data-id="1697793795064" data-name="Trustpilot Reviews Carousel Widget" style=""><div class="module gf_module- gf_module--lg gf_module--md gf_module--sm gf_module--xs "><!-- TrustBox widget - Carousel --><div class="trustpilot-widget" data-locale="fr-FR" data-template-id="53aa8912dec7e10d38f59f36" data-businessunit-id="619cb6f68535aa4407e65db6" data-style-height="140px" data-style-width="100%" data-theme="light" data-stars="5" data-review-languages="fr" style="position: relative;"><iframe title="Avis clients publiés sur Trustpilot" loading="auto" src="./ebikeshop_files/index.html" style="position: relative; height: 140px; width: 100%; border-style: none; display: block; overflow: hidden;"></iframe></div><!-- End TrustBox widget --></div></div></div></div>
 <!--gfsplit--><div data-label="Separator" data-key="separator" data-atomgroup="element" id="e-1678092040033" class="element-wrap" data-icon="gpicon-separator" data-ver="1.0" data-id="1678092040033"><div class="elm gf-elm-center gf-elm-center-lg gf-elm-center-md gf-elm-center-sm gf-elm-center-xs" data-align="left" data-exc=""><hr class="gf_separator"></div></div><!--gfsplit--><div data-label="Row" data-key="row" data-atomgroup="row" id="r-1682325994555" class="gf_row" data-icon="gpicon-row" data-id="1682325994555" data-extraclass=""><div class="gf_column gf_col-lg-12 gf_col-md-12 gf_col-sm-12 gf_col-xs-12" id="c-1677846585990" data-id="1677846585990"><div data-label="Row" data-key="row" data-atomgroup="row" id="r-1682325994564" class="gf_row" data-icon="gpicon-row" data-id="1682325994564" data-layout-lg="6+6" data-extraclass="" data-layout-md="6+6" data-layout-sm="12+12" data-layout-xs="12+12"><div class="gf_column gf_col-lg-6 gf_col-md-6 gf_col-xs-12 gf_col-sm-12" id="c-1655717040092" data-id="1655717040092"><div data-label="Row" data-key="row" data-atomgroup="row" id="r-1682325994677" class="gf_row" data-icon="gpicon-row" data-id="1682325994677" data-extraclass="" data-layout-lg="6+6" data-layout-md="12" data-layout-sm="12" data-layout-xs="12"><div class="gf_column gf_col-lg-12 gf_col-md-12 gf_col-sm-12 gf_col-xs-12" id="c-1655716092635" data-id="1655716092635"><div data-label="Heading" data-key="heading" data-atomgroup="element" id="e-1682325994600" class="element-wrap" data-icon="gpicon-heading" data-ver="2" data-id="1682325994600"><div class="elm text-edit gf-elm-center gf-elm-left-md gf-elm-left-sm gf-elm-left-xs gf-elm-left-lg" data-gemlang="en" data-exc=""><h2 class="gf_gs-text-heading-2">C'est quoi, un vélo électrique reconditionné ?</h2></div></div><div data-label="Text Block" data-key="text-block" data-atomgroup="element" id="e-1682325994624" class="element-wrap" data-icon="gpicon-textblock" data-ver="1" data-id="1682325994624"><div class="elm text-edit gf-elm-left gf_gs-text-paragraph-1 gf-elm-left-lg gf-elm-left-md gf-elm-left-sm gf-elm-left-xs" data-gemlang="en" data-exc=""><p>Chez Upway, chaque vélo électrique d’occasion passe par une inspection et un reconditionnement par un mécanicien professionnel, afin de vous proposer des vélos de grande qualité, dans un état aussi proche du neuf que possible. Découvrez nos 20 points d'inspection électroniques et mécaniques.</p></div></div><div data-label="Button" data-key="button" data-atomgroup="element" id="e-1682325994585" class="element-wrap" data-icon="gpicon-gpicon-button" data-ver="1.0" data-id="1682325994585"><div class="elm gf-elm-center gf-elm-left-md gf-elm-left-sm gf-elm-left-xs gf-elm-left-lg" data-stretch-lg="0" data-stretch-md="0" data-stretch-sm="0" data-stretch-xs="0"><a class="button gf_button gf_gs-button-element gf_gs-button---large" href="https://upway.fr/pages/le-reconditionnement-par-upway" target="" data-scroll-speed="2000" data-exc="" data-scroll-speed-md="2000" data-scroll-speed-sm="2000" data-scroll-speed-xs="2000"><span>En savoir plus</span></a></div></div></div></div></div><div class="gf_column gf_col-lg-6 gf_col-md-6 gf_col-xs-12 gf_col-sm-12" id="c-1676916549093" data-id="1676916549093"></div></div></div></div><!--gfsplit--><div data-label="Row" data-key="row" data-atomgroup="row" id="r-1678092040010" class="gf_row" data-icon="gpicon-row" data-id="1678092040010" data-extraclass=""><div class="gf_column gf_col-lg-12 gf_col-md-12 gf_col-sm-12 gf_col-xs-12" id="c-1676968430343" data-id="1676968430343"><style>
 #r-1678092040010 .blog-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px;}
 #r-1678092040010 .blog-head-text{display:flex;flex-direction:column;gap:6px;}
