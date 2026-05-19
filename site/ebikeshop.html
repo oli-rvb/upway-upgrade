@@ -10799,8 +10799,27 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
     if (!host || !host.shadowRoot) return false;
     var root = host.shadowRoot;
     var wrapper = root.querySelector('.swiper-wrapper');
+    if (!wrapper || host.dataset.arrowsWired) return false;
     var arrows = root.querySelectorAll('.cursor-pointer.bg-\\[\\#4733FF\\]');
-    if (!wrapper || arrows.length < 2 || host.dataset.arrowsWired) return false;
+    /* Inject arrows for shadow carousels whose header was rendered without them
+       (e.g. "Vu récemment"). Mirrors the markup used by "Recommandé pour vous". */
+    if (arrows.length < 2) {
+      var header = root.querySelector('.flex.justify-between.items-center');
+      if (header) {
+        var arrowsWrap = document.createElement('div');
+        arrowsWrap.className = 'shrink-0 inline-flex';
+        arrowsWrap.innerHTML =
+          '<div class="cursor-pointer mx-2 bg-[#4733FF] rounded-full pr-[2px]">' +
+            '<svg width="32" height="32" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path></svg>' +
+          '</div>' +
+          '<div class="cursor-pointer mx-2 bg-[#4733FF] rounded-full pl-[2px]">' +
+            '<svg width="32" height="32" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg>' +
+          '</div>';
+        header.appendChild(arrowsWrap);
+        arrows = root.querySelectorAll('.cursor-pointer.bg-\\[\\#4733FF\\]');
+      }
+    }
+    if (arrows.length < 2) return false;
     host.dataset.arrowsWired = '1';
 
     function getSlideStep() {
@@ -10840,8 +10859,8 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
       wrapper.style.transition = 'transform .35s ease';
       wrapper.style.transform = 'translate3d(' + target + 'px, 0px, 0px)';
     }
-    arrows[0].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(-1); });
-    arrows[1].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(1); });
+    arrows[0].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(1); });
+    arrows[1].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(-1); });
 
     /* Touch swipe support (mobile). Skip if Swiper bundle is driving the carousel itself. */
     var swiperEl0 = root.querySelector('.swiper');
