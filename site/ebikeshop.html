@@ -10077,6 +10077,19 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 }
 .media-arrows button:hover { background: #3525cc; }
 .media-arrows svg { width: 32px; height: 32px; fill: #fff; }
+
+/* Hide carousel arrow buttons on mobile — swipe replaces them. */
+@media (max-width: 767px) {
+  #cat-arrow-prev,
+  #cat-arrow-next,
+  .media-arrows,
+  #r-1678092040010 .blog-arrows,
+  #m-1678092039969 [data-js-carousel-prev],
+  #m-1678092039969 [data-js-carousel-next],
+  #m-1678092039969 .slick-arrow {
+    display: none !important;
+  }
+}
 </style>
 <script>
 /* Inject arrows next to "Les médias parlent de nous" h2 and drive the owl-stage transform */
@@ -10679,6 +10692,21 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
         update();
       });
     }
+    /* Hide arrows on mobile viewports; swipe replaces them. Bootstrap's
+       `.d-inline-block` uses display:inline-block!important so we need to set
+       our override with !important priority to win the specificity match. */
+    function applyArrowVisibility() {
+      var hide = window.matchMedia('(max-width: 767px)').matches;
+      if (hide) {
+        prev.style.setProperty('display', 'none', 'important');
+        next.style.setProperty('display', 'none', 'important');
+      } else {
+        prev.style.removeProperty('display');
+        next.style.removeProperty('display');
+      }
+    }
+    applyArrowVisibility();
+    window.addEventListener('resize', applyArrowVisibility);
     return true;
   }
   if (document.readyState === 'complete') init();
@@ -10821,6 +10849,11 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
     }
     if (arrows.length < 2) return false;
     host.dataset.arrowsWired = '1';
+
+    /* Hide arrows on mobile (shadow-scoped). Swipe replaces them. */
+    var mobileHide = document.createElement('style');
+    mobileHide.textContent = '@media (max-width: 767px) { .shrink-0.inline-flex { display: none !important; } }';
+    root.appendChild(mobileHide);
 
     function getSlideStep() {
       var slide = wrapper.querySelector('.swiper-slide');
