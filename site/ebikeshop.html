@@ -9999,6 +9999,61 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
     e.stopPropagation();
     go(t.id === 'cat-arrow-next' ? 1 : -1);
   }, true);
+
+  /* Shared mobile-swipe helper, used by all DOM-driven carousels on this page.
+     `commit(dir, startTx)` is called when the touch ends past the threshold; the
+     helper handles drag preview and snap-back when the gesture is too short. */
+  window.__attachCarouselSwipe = window.__attachCarouselSwipe || function(track, commit) {
+    if (!track || track.dataset.swipeWired) return;
+    track.dataset.swipeWired = '1';
+    var sx = 0, sy = 0, stx = 0;
+    var tracking = false, decided = false, horiz = false;
+    var DECIDE = 8, THRESHOLD = 40;
+    track.addEventListener('touchstart', function(e) {
+      if (e.touches.length !== 1) return;
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+      var m = (track.style.transform || '').match(/translate3d\(\s*(-?\d+(?:\.\d+)?)/);
+      stx = m ? parseFloat(m[1]) : 0;
+      tracking = true; decided = false; horiz = false;
+      track.style.transition = 'none';
+    }, { passive: true });
+    track.addEventListener('touchmove', function(e) {
+      if (!tracking || e.touches.length !== 1) return;
+      var dx = e.touches[0].clientX - sx;
+      var dy = e.touches[0].clientY - sy;
+      if (!decided) {
+        if (Math.abs(dx) < DECIDE && Math.abs(dy) < DECIDE) return;
+        decided = true; horiz = Math.abs(dx) > Math.abs(dy);
+        if (!horiz) { tracking = false; return; }
+      }
+      if (e.cancelable) e.preventDefault();
+      track.style.transform = 'translate3d(' + (stx + dx) + 'px, 0px, 0px)';
+    }, { passive: false });
+    function end(e) {
+      if (!tracking) return;
+      tracking = false;
+      if (!horiz) return;
+      var ex = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : sx;
+      var dx = ex - sx;
+      track.style.transition = 'transform .35s ease';
+      if (Math.abs(dx) > THRESHOLD) commit(dx > 0 ? -1 : 1, stx);
+      else track.style.transform = 'translate3d(' + stx + 'px, 0px, 0px)';
+    }
+    track.addEventListener('touchend', end, { passive: true });
+    track.addEventListener('touchcancel', end, { passive: true });
+  };
+
+  function attachSwipe() {
+    var carousel = getCarousel();
+    var stage = carousel && carousel.querySelector('.owl-stage');
+    if (!stage) return false;
+    window.__attachCarouselSwipe(stage, function(dir) { go(dir); });
+    return true;
+  }
+  if (document.readyState === 'complete') attachSwipe();
+  else window.addEventListener('load', attachSwipe);
+  var sTries = 0;
+  var sIv = setInterval(function() { if (attachSwipe() || ++sTries > 20) clearInterval(sIv); }, 500);
 })();
 </script>
 
@@ -10062,6 +10117,11 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
     }
     document.getElementById('media-prev').addEventListener('click', function(e) { e.preventDefault(); go(-1); });
     document.getElementById('media-next').addEventListener('click', function(e) { e.preventDefault(); go(1); });
+
+    var stage = module.querySelector('.owl-carousel .owl-stage');
+    if (stage && window.__attachCarouselSwipe) {
+      window.__attachCarouselSwipe(stage, function(dir) { go(dir); });
+    }
     return true;
   }
   if (document.readyState === 'complete') build();
@@ -10613,6 +10673,12 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
     prev.addEventListener('click', function (e) { e.preventDefault(); offset -= step; update(); });
     next.addEventListener('click', function (e) { e.preventDefault(); offset += step; update(); });
     update();
+    if (window.__attachCarouselSwipe) {
+      window.__attachCarouselSwipe(track, function (dir) {
+        offset += dir * step;
+        update();
+      });
+    }
     return true;
   }
   if (document.readyState === 'complete') init();
@@ -10714,6 +10780,7 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
     function go(dir){var s=step();var x=curX();var min=-maxScroll();var t=x+(dir>0?-s:s);if(t>0)t=min;else if(t<min)t=0;track.style.transform='translate3d('+t+'px,0,0)';}
     prev.addEventListener('click',function(e){e.preventDefault();go(-1);});
     next.addEventListener('click',function(e){e.preventDefault();go(1);});
+    if(window.__attachCarouselSwipe){window.__attachCarouselSwipe(track,function(dir){go(dir);});}
     return true;
   }
   if(document.readyState==='complete')wire();else window.addEventListener('load',wire);
@@ -10775,6 +10842,63 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
     }
     arrows[0].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(-1); });
     arrows[1].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(1); });
+
+    /* Touch swipe support (mobile). Skip if Swiper bundle is driving the carousel itself. */
+    var swiperEl0 = root.querySelector('.swiper');
+    if (!(swiperEl0 && swiperEl0.swiper)) {
+      var tStartX = 0, tStartY = 0, tStartTx = 0;
+      var tracking = false, horizontal = false, decided = false;
+      var DECIDE = 8, SWIPE_THRESHOLD = 40;
+
+      wrapper.addEventListener('touchstart', function(e) {
+        if (e.touches.length !== 1) return;
+        tStartX = e.touches[0].clientX;
+        tStartY = e.touches[0].clientY;
+        tStartTx = getCurrentX();
+        tracking = true; horizontal = false; decided = false;
+        wrapper.style.transition = 'none';
+      }, { passive: true });
+
+      wrapper.addEventListener('touchmove', function(e) {
+        if (!tracking || e.touches.length !== 1) return;
+        var dx = e.touches[0].clientX - tStartX;
+        var dy = e.touches[0].clientY - tStartY;
+        if (!decided) {
+          if (Math.abs(dx) < DECIDE && Math.abs(dy) < DECIDE) return;
+          decided = true;
+          horizontal = Math.abs(dx) > Math.abs(dy);
+          if (!horizontal) { tracking = false; return; }
+        }
+        if (e.cancelable) e.preventDefault();
+        var min = -maxScroll();
+        var x = tStartTx + dx;
+        if (x > 0) x = x / 3;
+        else if (x < min) x = min + (x - min) / 3;
+        wrapper.style.transform = 'translate3d(' + x + 'px, 0px, 0px)';
+      }, { passive: false });
+
+      function endTouch(e) {
+        if (!tracking) return;
+        tracking = false;
+        if (!horizontal) return;
+        var endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : tStartX;
+        var dx = endX - tStartX;
+        var step = getSlideStep();
+        var min = -maxScroll();
+        var target;
+        if (Math.abs(dx) > SWIPE_THRESHOLD) {
+          target = tStartTx + (dx > 0 ? step : -step);
+        } else {
+          target = tStartTx;
+        }
+        if (target > 0) target = 0;
+        else if (target < min) target = min;
+        wrapper.style.transition = 'transform .3s ease';
+        wrapper.style.transform = 'translate3d(' + target + 'px, 0px, 0px)';
+      }
+      wrapper.addEventListener('touchend', endTouch, { passive: true });
+      wrapper.addEventListener('touchcancel', endTouch, { passive: true });
+    }
     return true;
   }
   function tryWire() {
