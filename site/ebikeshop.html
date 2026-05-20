@@ -10087,8 +10087,9 @@ So until we get rid of the .tailwind-root selector, we add custom @keyframes her
 .media-arrows button:hover { background: #3525cc; }
 .media-arrows svg { width: 32px; height: 32px; fill: #fff; }
 
-/* Hide carousel arrow buttons on mobile — swipe replaces them. */
-@media (max-width: 767px) {
+/* Hide carousel arrow buttons on real touch devices — swipe replaces them.
+   `pointer: coarse` keeps the arrows visible on narrow desktop windows. */
+@media (max-width: 767px) and (pointer: coarse) {
   #cat-arrow-prev,
   #cat-arrow-next,
   .media-arrows,
@@ -10710,7 +10711,7 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
        `.d-inline-block` uses display:inline-block!important so we need to set
        our override with !important priority to win the specificity match. */
     function applyArrowVisibility() {
-      var hide = window.matchMedia('(max-width: 767px)').matches;
+      var hide = window.matchMedia('(max-width: 767px) and (pointer: coarse)').matches;
       if (hide) {
         prev.style.setProperty('display', 'none', 'important');
         next.style.setProperty('display', 'none', 'important');
@@ -10836,7 +10837,7 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
 <script>
 /* Wire up shadow-DOM Swiper carousel arrows (Recently Viewed, Recommended Bikes) */
 (function() {
-  function wireShadowCarousel(hostId) {
+  function wireShadowCarousel(hostId, invert) {
     var host = document.getElementById(hostId);
     if (!host || !host.shadowRoot) return false;
     var root = host.shadowRoot;
@@ -10866,7 +10867,7 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
 
     /* Hide arrows on mobile (shadow-scoped). Swipe replaces them. */
     var mobileHide = document.createElement('style');
-    mobileHide.textContent = '@media (max-width: 767px) { .shrink-0.inline-flex { display: none !important; } }';
+    mobileHide.textContent = '@media (max-width: 767px) and (pointer: coarse) { .shrink-0.inline-flex { display: none !important; } }';
     root.appendChild(mobileHide);
 
     function getSlideStep() {
@@ -10906,8 +10907,10 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
       wrapper.style.transition = 'transform .35s ease';
       wrapper.style.transform = 'translate3d(' + target + 'px, 0px, 0px)';
     }
-    arrows[0].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(1); });
-    arrows[1].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(-1); });
+    var prevDir = invert ? 1 : -1;
+    var nextDir = invert ? -1 : 1;
+    arrows[0].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(prevDir); });
+    arrows[1].addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); move(nextDir); });
 
     /* Touch swipe support (mobile). Skip if Swiper bundle is driving the carousel itself. */
     var swiperEl0 = root.querySelector('.swiper');
@@ -10968,8 +10971,8 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
     return true;
   }
   function tryWire() {
-    var ok1 = wireShadowCarousel('upway-recently-viewed-container');
-    var ok2 = wireShadowCarousel('upway-recommended-bikes-container');
+    var ok1 = wireShadowCarousel('upway-recently-viewed-container', true);
+    var ok2 = wireShadowCarousel('upway-recommended-bikes-container', false);
     return ok1 && ok2;
   }
   if (document.readyState === 'complete') { tryWire(); }
