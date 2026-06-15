@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upway — Comparaison Original / Upgrade</title>
+<style>
+  :root {
+    --brand: #4733FF;
+    --accent: #FF8A57;
+    --bg: #ffffff;
+    --border: #e3e3e8;
+    --text: #1a1a1f;
+    --muted: #6b6b75;
+    --toolbar-h: 48px;
+    --divider: 5px;
+    --split-ratio: 0.5;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    background: #f5f5f7;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--toolbar-h);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+  }
+
+  .toolbar .brand {
+    font-weight: 600;
+    color: var(--brand);
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    margin-right: 4px;
+  }
+
+  .seg {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fafafc;
+  }
+  .seg button {
+    border: 0;
+    background: transparent;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .seg button + button { border-left: 1px solid var(--border); }
+  .seg button:hover { color: var(--accent); }
+  .seg button.active {
+    background: var(--brand);
+    color: #fff;
+  }
+  .seg button.active:hover { color: #fff; }
+  .seg button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .orient-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
+  .info {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .info kbd {
+    background: #f0f0f4;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-family: inherit;
+  }
+
+  /* Container & panes */
+  .container {
+    position: fixed;
+    top: var(--toolbar-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    background: #000;
+  }
+  .container.mode-split-v { flex-direction: row; }
+  .container.mode-split-h { flex-direction: column; }
+  .container.mode-only-left  { flex-direction: row; }
+  .container.mode-only-right { flex-direction: row; }
+
+  .pane {
+    border: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    display: block;
+  }
+
+  /* Split sizing via --split-ratio */
+  .container.mode-split-v .pane-left,
+  .container.mode-split-h .pane-left {
+    flex: var(--split-ratio) 1 0;
+    min-width: 0;
+    min-height: 0;
+  }
+  .container.mode-split-v .pane-right,
+  .container.mode-split-h .pane-right {
+    flex: calc(1 - var(--split-ratio)) 1 0;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  /* Single-pane modes */
+  .container.mode-only-left  .pane-right,
+  .container.mode-only-left  .divider,
+  .container.mode-only-right .pane-left,
+  .container.mode-only-right .divider {
+    display: none;
+  }
+  .container.mode-only-left  .pane-left,
+  .container.mode-only-right .pane-right {
+    flex: 1 1 100%;
+  }
+
+  /* Divider */
+  .divider {
+    flex: 0 0 var(--divider);
+    background: #d4d4dc;
+    position: relative;
+    transition: background 0.15s;
+    touch-action: none;
+  }
+  .divider::after {
+    content: "";
+    position: absolute;
+    background: transparent;
+  }
+  .container.mode-split-v .divider {
+    cursor: col-resize;
+  }
+  .container.mode-split-v .divider::after {
+    top: 0; bottom: 0;
+    left: -4px; right: -4px;
+  }
+  .container.mode-split-h .divider {
+    cursor: row-resize;
+  }
+  .container.mode-split-h .divider::after {
+    left: 0; right: 0;
+    top: -4px; bottom: -4px;
+  }
+  .divider:hover, .divider.dragging {
+    background: var(--brand);
+  }
+
+  /* During drag, block iframe pointer events so the cursor doesn't get captured */
+  .container.dragging .pane { pointer-events: none; }
+  .container.dragging { user-select: none; }
+
+  /* Responsive: narrow viewport forces horizontal orientation */
+  @media (max-width: 700px) {
+    .toolbar { gap: 8px; padding: 0 8px; }
+    .toolbar .brand { display: none; }
+    .seg button { padding: 7px 10px; font-size: 12px; }
+    .info { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar" role="toolbar" aria-label="Comparison controls">
+  <span class="brand">Upway · Comparaison</span>
+
+  <div class="seg" id="mode-seg" role="group" aria-label="View mode">
+    <button data-mode="only-left">Original</button>
+    <button data-mode="split" class="active">Split</button>
+    <button data-mode="only-right">Upgrade</button>
+  </div>
+
+  <span class="orient-label" id="orient-label">Orientation</span>
+  <div class="seg" id="orient-seg" role="group" aria-label="Split orientation">
+    <button data-orient="v" class="active" title="Côte à côte">↔</button>
+    <button data-orient="h" title="Empilé">↕</button>
+  </div>
+
+  <span class="info">
+    Glisser <kbd>│</kbd> pour redimensionner
+  </span>
+</div>
+
+<div class="container mode-split-v" id="container">
+  <iframe class="pane pane-left"  id="pane-left"  src="./upway.html"          title="Original Upway"  loading="eager"></iframe>
+  <div class="divider" id="divider" role="separator" aria-orientation="vertical" aria-label="Resize panes"></div>
+  <iframe class="pane pane-right" id="pane-right" src="./site/ebikeshop.html" title="Upway upgrade"   loading="eager"></iframe>
+</div>
+
+<script>
+(function () {
+  const container   = document.getElementById('container');
+  const divider     = document.getElementById('divider');
+  const modeSeg     = document.getElementById('mode-seg');
+  const orientSeg   = document.getElementById('orient-seg');
+  const orientLabel = document.getElementById('orient-label');
+
+  const STORAGE_KEY = 'upway-compare-state';
+  const MOBILE_BREAKPOINT = 700;
+
+  const state = {
+    mode: 'split',       // 'split' | 'only-left' | 'only-right'
+    orientation: 'v',    // 'v' | 'h'
+    ratio: 0.5,
+  };
+
+  // Restore from localStorage
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    if (saved.mode)        state.mode = saved.mode;
+    if (saved.orientation) state.orientation = saved.orientation;
+    if (typeof saved.ratio === 'number') state.ratio = saved.ratio;
+  } catch (_) { /* ignore */ }
+
+  function persist() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+  }
+
+  function isNarrow() {
+    return window.innerWidth < MOBILE_BREAKPOINT;
+  }
+
+  function applyState() {
+    // Force horizontal on narrow viewports
+    const effectiveOrient = isNarrow() ? 'h' : state.orientation;
+
+    container.classList.remove('mode-split-v', 'mode-split-h', 'mode-only-left', 'mode-only-right');
+    if (state.mode === 'split') {
+      container.classList.add(effectiveOrient === 'h' ? 'mode-split-h' : 'mode-split-v');
+    } else {
+      container.classList.add('mode-' + state.mode);
+    }
+    container.style.setProperty('--split-ratio', state.ratio);
+
+    divider.setAttribute('aria-orientation', effectiveOrient === 'h' ? 'horizontal' : 'vertical');
+
+    // Update toolbar visuals
+    modeSeg.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === state.mode);
+    });
+    orientSeg.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', b.dataset.orient === effectiveOrient);
+    });
+
+    const splitActive = state.mode === 'split';
+    const lockOrient  = isNarrow();
+    orientSeg.querySelectorAll('button').forEach(b => {
+      b.disabled = !splitActive || lockOrient;
+    });
+    orientLabel.style.opacity = splitActive && !lockOrient ? '1' : '0.4';
+  }
+
+  // Toolbar wiring
+  modeSeg.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-mode]');
+    if (!btn) return;
+    state.mode = btn.dataset.mode;
+    applyState();
+    persist();
+  });
+
+  orientSeg.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-orient]');
+    if (!btn || btn.disabled) return;
+    state.orientation = btn.dataset.orient;
+    applyState();
+    persist();
+  });
+
+  // Drag-to-resize divider
+  let dragging = false;
+
+  function startDrag(e) {
+    if (state.mode !== 'split') return;
+    dragging = true;
+    container.classList.add('dragging');
+    divider.classList.add('dragging');
+    e.preventDefault();
+  }
+
+  function moveDrag(e) {
+    if (!dragging) return;
+    const point = e.touches ? e.touches[0] : e;
+    const rect = container.getBoundingClientRect();
+    const effectiveOrient = isNarrow() ? 'h' : state.orientation;
+    let ratio;
+    if (effectiveOrient === 'h') {
+      ratio = (point.clientY - rect.top) / rect.height;
+    } else {
+      ratio = (point.clientX - rect.left) / rect.width;
+    }
+    ratio = Math.max(0.05, Math.min(0.95, ratio));
+    state.ratio = ratio;
+    container.style.setProperty('--split-ratio', ratio);
+  }
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    container.classList.remove('dragging');
+    divider.classList.remove('dragging');
+    persist();
+  }
+
+  divider.addEventListener('mousedown', startDrag);
+  divider.addEventListener('touchstart', startDrag, { passive: false });
+  document.addEventListener('mousemove', moveDrag);
+  document.addEventListener('touchmove', moveDrag, { passive: false });
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('touchend', endDrag);
+  document.addEventListener('touchcancel', endDrag);
+
+  // React to viewport changes (mobile orientation lock)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(applyState, 100);
+  });
+
+  applyState();
+})();
+</script>
+
+</body>
+</html>

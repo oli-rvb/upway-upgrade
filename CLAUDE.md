@@ -9,6 +9,8 @@ Portfolio piece showing UI/UX upgrades to **Upway.fr**, a real French refurbishe
 | `site/ebikeshop.html` | Primary deliverable. Saved-page snapshot of `https://upway.fr/` (~12k lines), edited directly to implement the upgrades. |
 | `site/ebikeshop_files/` | Assets the snapshot loads: JS, CSS, images, embedded widgets. |
 | `site/ebikeshop_files/index.html` | Trustpilot reviews widget loaded via iframe by the main page. Also modified (mobile responsiveness). |
+| `upway.html` + `upway_files/` | Unmodified saved-page snapshot of `https://upway.fr/`, kept at repo root as the "before" reference for the comparison view. |
+| `compare.html` | Side-by-side comparison page. Loads `upway.html` and `site/ebikeshop.html` in two iframes with a draggable divider; toolbar lets visitors switch between original-only, split (vertical or horizontal), and upgrade-only. |
 | `uploads/` | Design-exploration sketches and reference screenshots accumulated during the upgrade work. Not user-facing. |
 
 ## Brand context
