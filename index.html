@@ -254,8 +254,8 @@
     <span class="label">view</span>
     <div class="seg" id="mode-seg" role="group" aria-label="View mode">
       <button data-mode="only-left">L</button>
-      <button data-mode="split" class="active">L+R</button>
-      <button data-mode="only-right">R</button>
+      <button data-mode="split">L+R</button>
+      <button data-mode="only-right" class="active">R</button>
     </div>
   </div>
 
@@ -268,11 +268,11 @@
   </div>
 
   <div class="status" role="note">
-    Upway homepage (left) is overwhelming and unclear. On the right, my design taste.
+    Original Upway homepage (L) is overwhelming and unclear. On the right (R), my design taste.
   </div>
 </div>
 
-<div class="container mode-split-v" id="container">
+<div class="container mode-only-right" id="container">
   <iframe class="pane pane-left"  id="pane-left"  src="./upway.html"          title="Original Upway"  loading="eager"></iframe>
   <div class="divider" id="divider" role="separator" aria-orientation="vertical" aria-label="Resize panes"></div>
   <iframe class="pane pane-right" id="pane-right" src="./site/ebikeshop.html" title="Upway upgrade"   loading="eager"></iframe>
@@ -290,7 +290,7 @@
   const MOBILE_BREAKPOINT = 700;
 
   const state = {
-    mode: 'split',       // 'split' | 'only-left' | 'only-right'
+    mode: 'only-right',  // 'split' | 'only-left' | 'only-right'
     orientation: 'v',    // 'v' | 'h'
     ratio: 0.5,
   };
