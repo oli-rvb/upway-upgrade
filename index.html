@@ -330,7 +330,7 @@
       b.classList.toggle('active', b.dataset.mode === state.mode);
     });
     orientSeg.querySelectorAll('button').forEach(b => {
-      b.classList.toggle('active', b.dataset.orient === effectiveOrient);
+      b.classList.toggle('active', state.mode === 'split' && b.dataset.orient === effectiveOrient);
     });
 
     const splitActive = state.mode === 'split';
