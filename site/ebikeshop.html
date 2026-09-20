@@ -3951,7 +3951,7 @@ first.parentNode.insertBefore(script, first);
   }
 </script>
 <script defer="" src="./ebikeshop_files/shopify-perf-kit-3.3.1.min.js" data-application="storefront-renderer" data-shop-id="59177697445" data-render-region="gcp-europe-west1" data-page-type="index" data-theme-instance-id="132288217253" data-theme-name="Shella" data-theme-version="5.0.2" data-monorail-region="shop_domain" data-resource-timing-sampling-rate="10" data-shs="true" data-shs-beacon="true" data-shs-export-with-fetch="true" data-shs-logs-sample-rate="1" data-shs-beacon-endpoint="https://upway.fr/api/collect"></script>
-<script src="./ebikeshop_files/section.carousel-products.js"></script><script src="./ebikeshop_files/section.footer.js"></script><style class="upway-sw-css">@charset "UTF-8";/**
+<script src="./ebikeshop_files/section.footer.js"></script><style class="upway-sw-css">@charset "UTF-8";/**
  * Swiper 8.4.7
  * Most modern mobile touch slider and framework with hardware accelerated transitions
  * https://swiperjs.com
@@ -10672,9 +10672,8 @@ S20.552,9.968,20.324,10.515z"></path></svg></button></div><div class="flex flex-
         </div>
     </div>
 </carousel-products>
-<script>
-    theme.AssetsLoader.require('scripts', 'carousel_products');
-</script>
+<!-- carousel_products (slick) intentionally not loaded: the markup above is slick's saved post-init DOM,
+     so re-running slick skips buildOut() and throws in initADA(). The script below drives it instead. -->
 <script>
 (function () {
   function init() {
