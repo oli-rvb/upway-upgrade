@@ -274,9 +274,9 @@
 </div>
 
 <div class="container mode-only-right" id="container">
-  <iframe class="pane pane-left"  id="pane-left"  src="./upway.html"          title="Original Upway"  loading="eager"></iframe>
+  <iframe class="pane pane-left"  id="pane-left"  data-src="./upway.html"          title="Original Upway"></iframe>
   <div class="divider" id="divider" role="separator" aria-orientation="vertical" aria-label="Resize panes"></div>
-  <iframe class="pane pane-right" id="pane-right" src="./site/ebikeshop.html" title="Upway upgrade"   loading="eager"></iframe>
+  <iframe class="pane pane-right" id="pane-right" data-src="./site/ebikeshop.html" title="Upway upgrade"></iframe>
 </div>
 
 <script>
@@ -286,9 +286,46 @@
   const modeSeg     = document.getElementById('mode-seg');
   const orientSeg   = document.getElementById('orient-seg');
   const orientLabel = document.getElementById('orient-label');
+  const panes       = { left: document.getElementById('pane-left'), right: document.getElementById('pane-right') };
 
   const STORAGE_KEY = 'upway-compare-state';
   const MOBILE_BREAKPOINT = 700;
+
+  // Only the pane(s) the current mode actually shows get their src set up
+  // front. The hidden pane is warmed in the background once the visible
+  // one(s) finish loading, so switching views later is instant without
+  // competing with the initial page load for bandwidth.
+  const loaded = { left: false, right: false };
+  let warmScheduled = false;
+
+  function visiblePanesForMode(mode) {
+    if (mode === 'split') return ['left', 'right'];
+    return mode === 'only-left' ? ['left'] : ['right'];
+  }
+
+  function ensurePaneLoaded(key) {
+    const pane = panes[key];
+    if (loaded[key]) return;
+    loaded[key] = true;
+    pane.setAttribute('loading', 'eager');
+    pane.src = pane.dataset.src;
+    pane.addEventListener('load', function onLoad() {
+      pane.removeEventListener('load', onLoad);
+      maybeWarmHiddenPane();
+    });
+  }
+
+  function maybeWarmHiddenPane() {
+    if (warmScheduled) return;
+    const visible = visiblePanesForMode(state.mode);
+    if (!visible.every(k => loaded[k])) return;
+    warmScheduled = true;
+    ['left', 'right'].filter(k => !visible.includes(k)).forEach(k => {
+      // Small delay so the warm-up fetch doesn't contend with the visible
+      // pane's own last-mile rendering/painting.
+      setTimeout(() => ensurePaneLoaded(k), 200);
+    });
+  }
 
   const state = {
     mode: 'only-right',  // 'split' | 'only-left' | 'only-right'
@@ -340,6 +377,9 @@
       b.disabled = !splitActive || lockOrient;
     });
     orientLabel.style.opacity = splitActive && !lockOrient ? '1' : '0.4';
+
+    // Load whichever pane(s) this mode shows; harmless no-op if already loaded.
+    visiblePanesForMode(state.mode).forEach(ensurePaneLoaded);
   }
 
   // Toolbar wiring
